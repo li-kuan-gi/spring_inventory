@@ -1,10 +1,9 @@
 package com.example.spring_inventory.service;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.Set;
 
 public interface ReserveProducts {
 
-    void execute(Map<UUID, Integer> requirements);
+    void execute(Set<ReserveRequirement> requirements);
 
 }

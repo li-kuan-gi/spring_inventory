@@ -1,7 +1,7 @@
 package com.example.spring_inventory.service;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.example.spring_inventory.domain.Product;
 import com.example.spring_inventory.domain.ProductRepository;
@@ -14,15 +14,21 @@ public class ReserveProductsImpl implements ReserveProducts {
     private ProductRepository repo;
 
     @Override
-    public void execute(Map<UUID, Integer> requirements) {
-        final var ids = requirements.keySet();
+    public void execute(Set<ReserveRequirement> requirements) {
+        final var ids = requirements.stream().map(r -> r.getId()).collect(Collectors.toSet());
         final var products = repo.findByIdIn(ids);
 
         if (products.size() != ids.size())
             throw new SomeProductIdInvalid();
 
         for (Product product : products) {
-            product.reserve(requirements.get(product.getId()));
+            final var quantity = requirements
+                    .stream()
+                    .filter(r -> r.getId().equals(product.getId()))
+                    .findFirst()
+                    .get()
+                    .getQuantity();
+            product.reserve(quantity);
             repo.save(product);
         }
     }

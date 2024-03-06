@@ -13,9 +13,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -53,13 +53,15 @@ public class ReserveProductsImplTest {
         final var products = (List<Product>) results[0];
 
         @SuppressWarnings("unchecked")
-        final var requirements = (Map<UUID, Integer>) results[1];
+        final var requirements = (Set<ReserveRequirement>) results[1];
+
+        final var ids = requirements.stream().map(r -> r.getId()).collect(Collectors.toSet());
 
         doReturn(products).when(repo).findByIdIn(anySet());
 
         service.execute(requirements);
 
-        verify(repo, times(1)).findByIdIn(requirements.keySet());
+        verify(repo, times(1)).findByIdIn(ids);
         verify(repo, times(2)).save(any(Product.class));
         verify(repo, atLeastOnce()).save(argThat(p -> p.getId().equals(products.get(0).getId())
                 && p.getAvailableQuantity().equals(availableQuantity1 - requiredQuantity1)));
@@ -82,14 +84,16 @@ public class ReserveProductsImplTest {
         final var products = (List<Product>) results[0];
 
         @SuppressWarnings("unchecked")
-        final var requirements = (Map<UUID, Integer>) results[1];
+        final var requirements = (Set<ReserveRequirement>) results[1];
+
+        final var ids = requirements.stream().map(r -> r.getId()).collect(Collectors.toSet());
 
         products.remove(0);
         doReturn(products).when(repo).findByIdIn(anySet());
 
         assertThrows(SomeProductIdInvalid.class, () -> service.execute(requirements));
 
-        verify(repo, times(1)).findByIdIn(requirements.keySet());
+        verify(repo, times(1)).findByIdIn(ids);
         verify(repo, never()).save(any());
     }
 
@@ -108,13 +112,15 @@ public class ReserveProductsImplTest {
         final var products = (List<Product>) results[0];
 
         @SuppressWarnings("unchecked")
-        final var requirements = (Map<UUID, Integer>) results[1];
+        final var requirements = (Set<ReserveRequirement>) results[1];
+
+        final var ids = requirements.stream().map(r -> r.getId()).collect(Collectors.toSet());
 
         doReturn(products).when(repo).findByIdIn(anySet());
 
         final var thrown = assertThrows(OutOfStock.class, () -> service.execute(requirements));
 
-        verify(repo, times(1)).findByIdIn(requirements.keySet());
+        verify(repo, times(1)).findByIdIn(ids);
         assertThat(thrown.getMessage()).contains(products.get(1).getId().toString());
     }
 
@@ -130,7 +136,7 @@ public class ReserveProductsImplTest {
                 Arrays.asList(requiredQuantity1, requiredQuantity2));
 
         @SuppressWarnings("unchecked")
-        final var requirements = (Map<UUID, Integer>) results[1];
+        final var requirements = (Set<ReserveRequirement>) results[1];
 
         final var exception = new RuntimeException();
         doThrow(exception).when(repo).findByIdIn(anySet());
@@ -148,9 +154,13 @@ public class ReserveProductsImplTest {
                 .map(q -> new Product(UUID.randomUUID(), q))
                 .collect(Collectors.toList());
 
-        final var requirements = new HashMap<UUID, Integer>();
+        final var requirements = new HashSet<ReserveRequirement>();
         for (int index = 0; index < products.size(); index++) {
-            requirements.put(products.get(index).getId(), requiredQuantities.get(index));
+            final var requirement = new ReserveRequirement(
+                    products.get(index).getId(),
+                    requiredQuantities.get(index));
+
+            requirements.add(requirement);
         }
 
         Object[] results = { products, requirements };
