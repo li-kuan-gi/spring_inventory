@@ -4,3 +4,22 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy  
+
+  db:
+    image: mariadb
+    environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
+      TARGET_DB: app_db
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - |
+          mariadb -e 'SHOW DATABASES' | grep $${TARGET_DB} | [ $$(wc -l) -eq 1 ]
+      interval: 10s
+      timeout: 5s
+      retries: 3

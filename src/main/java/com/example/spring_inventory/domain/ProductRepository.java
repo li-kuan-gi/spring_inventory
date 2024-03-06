@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-public interface ProductRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface ProductRepository extends CrudRepository<Product, UUID> {
 
     List<Product> findByIdIn(Collection<UUID> ids);
 
-    void save(Product product);
+    <S extends Product> S save(S product);
 
 }
