@@ -13,7 +13,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -40,22 +39,22 @@ public class ReserveServiceImplTest {
 
     @Test
     void reservingProductsDecreaseAvailableQuantity() {
+        final var id1 = UUID.randomUUID();
+        final var id2 = UUID.randomUUID();
         final var availableQuantity1 = 5;
         final var availableQuantity2 = 5;
         final var requiredQuantity1 = 3;
         final var requiredQuantity2 = 2;
 
-        final var results = generateProductsRequirements(
-                Arrays.asList(availableQuantity1, availableQuantity2),
-                Arrays.asList(requiredQuantity1, requiredQuantity2));
+        final var ids = collectSet(id1, id2);
 
-        @SuppressWarnings("unchecked")
-        final var products = (List<Product>) results[0];
+        final var requirements = collectSet(
+                new ReserveRequirement(id1, requiredQuantity1),
+                new ReserveRequirement(id2, requiredQuantity2));
 
-        @SuppressWarnings("unchecked")
-        final var requirements = (Set<ReserveRequirement>) results[1];
-
-        final var ids = requirements.stream().map(r -> r.getId()).collect(Collectors.toSet());
+        final var products = collectList(
+                new Product(id1, availableQuantity1),
+                new Product(id2, availableQuantity2));
 
         doReturn(products).when(repo).findByIdIn(anySet());
 
@@ -71,24 +70,20 @@ public class ReserveServiceImplTest {
 
     @Test
     void throwSomeProductIdInvalidWhenProductsAmountUnexpected() {
+        final var id1 = UUID.randomUUID();
+        final var id2 = UUID.randomUUID();
         final var availableQuantity1 = 5;
-        final var availableQuantity2 = 5;
         final var requiredQuantity1 = 3;
         final var requiredQuantity2 = 2;
 
-        final var results = generateProductsRequirements(
-                Arrays.asList(availableQuantity1, availableQuantity2),
-                Arrays.asList(requiredQuantity1, requiredQuantity2));
+        final var ids = collectSet(id1, id2);
 
-        @SuppressWarnings("unchecked")
-        final var products = (List<Product>) results[0];
+        final var requirements = collectSet(
+                new ReserveRequirement(id1, requiredQuantity1),
+                new ReserveRequirement(id2, requiredQuantity2));
 
-        @SuppressWarnings("unchecked")
-        final var requirements = (Set<ReserveRequirement>) results[1];
+        final var products = collectList(new Product(id1, availableQuantity1));
 
-        final var ids = requirements.stream().map(r -> r.getId()).collect(Collectors.toSet());
-
-        products.remove(0);
         doReturn(products).when(repo).findByIdIn(anySet());
 
         assertThrows(SomeProductIdInvalid.class, () -> service.execute(requirements));
@@ -99,22 +94,22 @@ public class ReserveServiceImplTest {
 
     @Test
     void throwOutOfStockWhenSomeProductQuantityInsufficient() {
+        final var id1 = UUID.randomUUID();
+        final var id2 = UUID.randomUUID();
         final var availableQuantity1 = 5;
         final var availableQuantity2 = 5;
         final var requiredQuantity1 = 3;
         final var requiredQuantity2 = 6;
 
-        final var results = generateProductsRequirements(
-                Arrays.asList(availableQuantity1, availableQuantity2),
-                Arrays.asList(requiredQuantity1, requiredQuantity2));
+        final var ids = collectSet(id1, id2);
 
-        @SuppressWarnings("unchecked")
-        final var products = (List<Product>) results[0];
+        final var requirements = collectSet(
+                new ReserveRequirement(id1, requiredQuantity1),
+                new ReserveRequirement(id2, requiredQuantity2));
 
-        @SuppressWarnings("unchecked")
-        final var requirements = (Set<ReserveRequirement>) results[1];
-
-        final var ids = requirements.stream().map(r -> r.getId()).collect(Collectors.toSet());
+        final var products = collectList(
+                new Product(id1, availableQuantity1),
+                new Product(id2, availableQuantity2));
 
         doReturn(products).when(repo).findByIdIn(anySet());
 
@@ -126,17 +121,14 @@ public class ReserveServiceImplTest {
 
     @Test
     void propagateExceptionFromRepository() {
-        final var availableQuantity1 = 5;
-        final var availableQuantity2 = 5;
+        final var id1 = UUID.randomUUID();
+        final var id2 = UUID.randomUUID();
         final var requiredQuantity1 = 3;
         final var requiredQuantity2 = 2;
 
-        final var results = generateProductsRequirements(
-                Arrays.asList(availableQuantity1, availableQuantity2),
-                Arrays.asList(requiredQuantity1, requiredQuantity2));
-
-        @SuppressWarnings("unchecked")
-        final var requirements = (Set<ReserveRequirement>) results[1];
+        final var requirements = collectSet(
+                new ReserveRequirement(id1, requiredQuantity1),
+                new ReserveRequirement(id2, requiredQuantity2));
 
         final var exception = new RuntimeException();
         doThrow(exception).when(repo).findByIdIn(anySet());
@@ -146,26 +138,14 @@ public class ReserveServiceImplTest {
         assertThat(thrown).isEqualTo(exception);
     }
 
-    private Object[] generateProductsRequirements(
-            List<Integer> availableQuantities,
-            List<Integer> requiredQuantities) {
-        final List<Product> products = availableQuantities
-                .stream()
-                .map(q -> new Product(UUID.randomUUID(), q))
-                .collect(Collectors.toList());
+    @SuppressWarnings("unchecked")
+    private <T> List<T> collectList(T... elements) {
+        return Arrays.asList(elements);
+    }
 
-        final var requirements = new HashSet<ReserveRequirement>();
-        for (int index = 0; index < products.size(); index++) {
-            final var requirement = new ReserveRequirement(
-                    products.get(index).getId(),
-                    requiredQuantities.get(index));
-
-            requirements.add(requirement);
-        }
-
-        Object[] results = { products, requirements };
-
-        return results;
+    @SuppressWarnings("unchecked")
+    private <T> Set<T> collectSet(T... elements) {
+        return Arrays.asList(elements).stream().collect(Collectors.toSet());
     }
 
 }
