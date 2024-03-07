@@ -1,9 +1,21 @@
 services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
   
   test:
     build:
       context: .
       dockerfile: Dockerfile
+      target: build
     depends_on:
       db:
         condition: service_healthy  
