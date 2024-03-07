@@ -10,7 +10,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void UnknownExceptionHandler() {
+    public void UnknownExceptionHandler(Exception ex) {
+        System.err.println(ex.getMessage());
     }
 
 }
