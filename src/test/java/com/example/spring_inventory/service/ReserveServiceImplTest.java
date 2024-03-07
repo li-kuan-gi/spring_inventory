@@ -30,10 +30,10 @@ import com.example.spring_inventory.domain.Product;
 import com.example.spring_inventory.domain.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class ReserveProductsImplTest {
+public class ReserveServiceImplTest {
 
     @InjectMocks
-    ReserveProductsImpl service;
+    ReserveServiceImpl service;
 
     @Mock
     ProductRepository repo;

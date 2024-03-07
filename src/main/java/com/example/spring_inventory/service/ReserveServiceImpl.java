@@ -9,7 +9,7 @@ import com.example.spring_inventory.domain.ProductRepository;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class ReserveProductsImpl implements ReserveProducts {
+public class ReserveServiceImpl implements ReserveService {
 
     private ProductRepository repo;
 
