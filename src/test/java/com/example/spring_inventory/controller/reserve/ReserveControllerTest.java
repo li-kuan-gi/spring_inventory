@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,6 @@ import com.example.spring_inventory.service.SomeProductIdInvalid;
 import com.example.spring_inventory.service.reserve.ReserveRequirement;
 import com.example.spring_inventory.service.reserve.ReserveService;
 
-@AutoConfigureJsonTesters
 @WebMvcTest(ReserveController.class)
 public class ReserveControllerTest {
 
