@@ -28,4 +28,8 @@ public class Product {
         availableQuantity -= quantity;
     }
 
+    public void restock(Integer quantity) {
+        availableQuantity += quantity;
+    }
+
 }

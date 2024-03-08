@@ -32,4 +32,16 @@ public class ProductTest {
         assertThat(thrown.getMessage()).contains(id.toString());
     }
 
+    @Test
+    void canRestock() {
+        final var id = UUID.randomUUID();
+        final var availableQuantity = 5;
+        final var restockQuantity = 3;
+        final var product = new Product(id, availableQuantity);
+
+        product.restock(restockQuantity);
+
+        assertThat(product.getAvailableQuantity()).isEqualTo(availableQuantity + restockQuantity);
+    }
+
 }
