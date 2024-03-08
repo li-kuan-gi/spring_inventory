@@ -15,8 +15,8 @@ public class ReserveRequirement {
     private Integer quantity;
 
     public ReserveRequirement(UUID id, Integer quantity) {
-        if (quantity < 0)
-            throw new QuantityShouldNonNegative(id);
+        if (quantity <= 0)
+            throw new QuantityShouldBePositive(id);
 
         this.id = id;
         this.quantity = quantity;

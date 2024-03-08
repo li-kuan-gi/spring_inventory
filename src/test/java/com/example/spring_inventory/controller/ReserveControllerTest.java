@@ -87,7 +87,7 @@ public class ReserveControllerTest {
     }
 
     @Test
-    void BadRequestForNegativeQuantity() throws Exception {
+    void BadRequestForNonPositiveQuantity() throws Exception {
         final var id = UUID.randomUUID();
         final var quantity = -3;
         final var requirementJson = "[" + requirementJson(id, quantity) + "]";
@@ -95,7 +95,7 @@ public class ReserveControllerTest {
         final var response = postRequirements(requirementJson);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString().toLowerCase()).contains("negative");
+        assertThat(response.getContentAsString().toLowerCase()).contains("positive");
         verify(service, never()).execute(any());
     }
 

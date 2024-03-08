@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.spring_inventory.domain.OutOfStock;
-import com.example.spring_inventory.service.QuantityShouldNonNegative;
+import com.example.spring_inventory.service.QuantityShouldBePositive;
 import com.example.spring_inventory.service.ReserveRequirement;
 import com.example.spring_inventory.service.ReserveService;
 import com.example.spring_inventory.service.SomeProductIdInvalid;
@@ -47,9 +47,9 @@ public class ReserveController {
         return "Some product not found.";
     }
 
-    @ExceptionHandler(QuantityShouldNonNegative.class)
+    @ExceptionHandler(QuantityShouldBePositive.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleQuantityShouldNonNegative(QuantityShouldNonNegative ex) {
+    public String handleQuantityShouldBePositive(QuantityShouldBePositive ex) {
         return ex.getMessage();
     }
 

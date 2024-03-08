@@ -19,10 +19,17 @@ public class ReserveRequirementTest {
     }
 
     @Test
-    void quantityShouldNonNegative() {
+    void quantityCannotBeNegative() {
         final var id = UUID.randomUUID();
 
-        assertThrows(QuantityShouldNonNegative.class, () -> new ReserveRequirement(id, -2));
+        assertThrows(QuantityShouldBePositive.class, () -> new ReserveRequirement(id, -2));
+    }
+
+    @Test
+    void quantityCannotBeZero() {
+        final var id = UUID.randomUUID();
+
+        assertThrows(QuantityShouldBePositive.class, () -> new ReserveRequirement(id, 0));
     }
 
 }
