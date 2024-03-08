@@ -1,9 +1,12 @@
 package com.example.spring_inventory.service.restock;
 
+import org.springframework.stereotype.Service;
+
 import com.example.spring_inventory.domain.ProductRepository;
 
 import lombok.AllArgsConstructor;
 
+@Service
 @AllArgsConstructor
 public class RestockServiceImpl implements RestockService {
 
