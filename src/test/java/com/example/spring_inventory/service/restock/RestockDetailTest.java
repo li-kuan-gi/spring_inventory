@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.example.spring_inventory.service.QuantityShouldBePositive;
 
-public class RestoreDetailTest {
+public class RestockDetailTest {
 
     @Test
     void identifiedByValues() {
