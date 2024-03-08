@@ -1,4 +1,4 @@
-package com.example.spring_inventory.controller;
+package com.example.spring_inventory.controller.reserve;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,9 +26,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.spring_inventory.domain.OutOfStock;
-import com.example.spring_inventory.service.ReserveRequirement;
-import com.example.spring_inventory.service.ReserveService;
 import com.example.spring_inventory.service.SomeProductIdInvalid;
+import com.example.spring_inventory.service.reserve.ReserveRequirement;
+import com.example.spring_inventory.service.reserve.ReserveService;
 
 @AutoConfigureJsonTesters
 @WebMvcTest(ReserveController.class)

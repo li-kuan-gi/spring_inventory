@@ -1,4 +1,4 @@
-package com.example.spring_inventory.service;
+package com.example.spring_inventory.service.reserve;
 
 import java.util.UUID;
 

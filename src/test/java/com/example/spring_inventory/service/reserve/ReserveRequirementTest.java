@@ -1,4 +1,4 @@
-package com.example.spring_inventory.service;
+package com.example.spring_inventory.service.reserve;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

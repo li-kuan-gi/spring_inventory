@@ -1,4 +1,4 @@
-package com.example.spring_inventory.controller;
+package com.example.spring_inventory.controller.reserve;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.spring_inventory.domain.OutOfStock;
-import com.example.spring_inventory.service.QuantityShouldBePositive;
-import com.example.spring_inventory.service.ReserveRequirement;
-import com.example.spring_inventory.service.ReserveService;
 import com.example.spring_inventory.service.SomeProductIdInvalid;
+import com.example.spring_inventory.service.reserve.QuantityShouldBePositive;
+import com.example.spring_inventory.service.reserve.ReserveRequirement;
+import com.example.spring_inventory.service.reserve.ReserveService;
 
 import lombok.AllArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.example.spring_inventory.service;
+package com.example.spring_inventory.service.reserve;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.spring_inventory.domain.Product;
 import com.example.spring_inventory.domain.ProductRepository;
+import com.example.spring_inventory.service.SomeProductIdInvalid;
 
 import lombok.AllArgsConstructor;
 

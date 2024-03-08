@@ -1,4 +1,4 @@
-package com.example.spring_inventory.service;
+package com.example.spring_inventory.service.reserve;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,6 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.spring_inventory.domain.OutOfStock;
 import com.example.spring_inventory.domain.Product;
 import com.example.spring_inventory.domain.ProductRepository;
+import com.example.spring_inventory.service.SomeProductIdInvalid;
 
 @ExtendWith(MockitoExtension.class)
 public class ReserveServiceImplTest {
