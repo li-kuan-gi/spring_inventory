@@ -43,4 +43,16 @@ public class ProductRepositoryTest {
         assertThat(result.get(0).getAvailableQuantity()).isEqualTo(product.getAvailableQuantity());
     }
 
+    @Test
+    void canFindById() {
+        final var id = UUID.randomUUID();
+        final var product = new Product(id, 5);
+        repo.save(product);
+
+        final var result = repo.findById(id);
+
+        assertThat(result.get().getId()).isEqualTo(product.getId());
+        assertThat(result.get().getAvailableQuantity()).isEqualTo(product.getAvailableQuantity());
+    }
+
 }
