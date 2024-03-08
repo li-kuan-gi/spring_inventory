@@ -2,6 +2,8 @@ package com.example.spring_inventory.service.reserve;
 
 import java.util.UUID;
 
+import com.example.spring_inventory.service.QuantityShouldBePositive;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
