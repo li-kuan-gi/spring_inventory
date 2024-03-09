@@ -2,13 +2,15 @@
 
 This is a [spring](https://spring.io/) implementation of naive inventory system.
 
-Now, there are only two services in this system:
+Now, there are only three services in this system:
 
 - reserving products
 
     It is a naive mimic of allocation. Just do a "subtraction".
 
 - restocking products
+
+- getting quantities
 
 ## Test
 
