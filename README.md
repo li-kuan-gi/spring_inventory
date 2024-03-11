@@ -2,30 +2,35 @@
 
 This is a [spring](https://spring.io/) implementation of naive inventory system.
 
-Now, there are only three services in this system:
+Now, there are four services in this system:
 
 - reserving products
 
-    It is a naive mimic of allocation. Just do a "subtraction".
+    > A naive mimic of allocation; just do a "subtraction".
 
 - restocking products
 
 - getting quantities
 
+- adding product
+
+    > A [rabbitmq](https://www.rabbitmq.com/) consumer to add/create new product.
+
+
 ## Test
 
-To run tests in container,
+The dafault test environment is a container. To run tests,
 
 ```sh
 make test
 ```
 
-To run tests locally, 
+If want to run tests locally, 
 
-- change the profile defined in `src/main/resources/application.properties` from `container` to `local`; that is, from
+- change the active profile defined in `src/test/resources/application.properties` from `main` to `local`; that is, from
 
     ```properties
-    spring.profiles.active=container
+    spring.profiles.active=main
     ```
 
     to
@@ -33,11 +38,16 @@ To run tests locally,
     ```properties
     spring.profiles.active=local
     ```
-- run database locally; for example,
+- run resources locally; for example,
 
     ```sh
-    make local-db
+    make local-resources
     ```
+and remember to tear down resources after test,
+
+```sh
+make down
+```
 
 ## Run application
 
@@ -52,5 +62,3 @@ Remember to tear down after use,
 ```sh
 make down
 ```
-
-To run locally, refer to running [Test](#test) locally.

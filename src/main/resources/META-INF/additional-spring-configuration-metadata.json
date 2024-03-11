@@ -1,0 +1,9 @@
+{
+    "properties": [
+        {
+            "name": "rabbitmq.queue",
+            "type": "java.lang.String",
+            "description": "rabbitmq queue name"
+        }
+    ]
+}
